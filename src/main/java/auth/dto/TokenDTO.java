@@ -3,9 +3,9 @@ package auth.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record TokenDTO(
-        @JsonProperty("acess_token") String accessToken,
+        @JsonProperty("access_token") String accessToken,
         @JsonProperty("refresh_token") String refreshToken,
-        @JsonProperty("expires_in") Integer expiresIn,
+        @JsonProperty("expires_in") int expiresIn,
         @JsonProperty("type") String tokenType
 ) {
 
