@@ -39,7 +39,7 @@ public class Task extends PanacheEntity {
     public LocalDateTime expiresIn;
 
     @ManyToOne
-    @Column(name = "id_user", nullable = false)
+    @JoinColumn(name = "id_user", nullable = false)
     public User user;
 
 }
