@@ -17,4 +17,13 @@ public class User extends PanacheEntity {
 
     @Column(name = "password")
     public String password;
+
+    public User() {
+    }
+
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 }
