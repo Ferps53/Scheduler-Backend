@@ -2,6 +2,7 @@ package auth.endpoint;
 
 import auth.controller.AuthController;
 import auth.dto.NewUserCreatedDTO;
+import auth.dto.TokenDTO;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -32,5 +33,16 @@ public class AuthEndpoint {
                 password
         );
         return Response.ok(userDTO).build();
+    }
+
+    @GET
+    @Path("login")
+    public Response login(
+            @HeaderParam("Authorization") String authorization,
+            @QueryParam("usernameOrEmail") String usernameOrEmail,
+            @QueryParam("password") String password
+    ) {
+        final TokenDTO token = authController.login(authorization, usernameOrEmail, password);
+        return Response.ok(token).build();
     }
 }

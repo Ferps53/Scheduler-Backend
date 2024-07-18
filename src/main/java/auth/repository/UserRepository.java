@@ -23,7 +23,8 @@ public class UserRepository implements PanacheRepository<User> {
         if (optionalUser.isPresent()) {
             return optionalUser.get();
         }
-        throw new BadRequestException("user.notFound");
+        // Hides the emails signed in the app
+        throw new BadRequestException("user.login.password.incorrect");
     }
 
     private Optional<UserDTO> findUserByEmailOrUsername(String username, String email) {

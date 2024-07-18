@@ -1,6 +1,8 @@
 package auth.controller;
 
 import auth.dto.NewUserCreatedDTO;
+import auth.dto.TokenDTO;
+import auth.dto.UserDTO;
 import auth.mapper.UserMapper;
 import auth.model.User;
 import auth.repository.UserRepository;
@@ -31,6 +33,9 @@ public class AuthController {
     @Inject
     UserMapper userMapper;
 
+    @Inject
+    JwtController jwtController;
+
     @Transactional
     public NewUserCreatedDTO createNewUser(
             String basic,
@@ -57,6 +62,27 @@ public class AuthController {
         user.persist();
 
         return userMapper.toUserCreatedDTO(user);
+    }
+
+    @Transactional
+    public TokenDTO login(String basic, String usernameOrEmail, String password) {
+
+        validateBasic(basic);
+
+        if (usernameOrEmail == null || usernameOrEmail.isEmpty() ||
+                password == null || password.isEmpty()) {
+            throw new BadRequestException("user.login.notNull");
+        }
+
+        usernameOrEmail = decode(usernameOrEmail);
+        password = decode(password);
+
+        final UserDTO user = userRepository.findUserLogin(usernameOrEmail);
+
+        if (!BcryptUtil.matches(password, user.password()))
+            throw new UnauthorizedException("user.login.password.incorrect");
+
+        return jwtController.generateToken(user);
     }
 
    private void validateBasic (String basic) {
