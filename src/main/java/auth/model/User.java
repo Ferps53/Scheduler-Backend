@@ -4,18 +4,22 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User extends PanacheEntity {
 
-    @Column(name = "name")
+    @NotNull(message = "user.username.notNull")
+    @Column(name = "name", nullable = false)
     public String name;
 
-    @Column(name = "email")
+    @NotNull(message = "user.email.notNull")
+    @Column(name = "email", nullable = false)
     public String email;
 
-    @Column(name = "password")
+    @NotNull(message = "user.password.notNull")
+    @Column(name = "password", nullable = false)
     public String password;
 
     public User() {

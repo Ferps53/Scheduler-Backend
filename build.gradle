@@ -21,6 +21,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-arc'
     implementation 'redis.clients:jedis:5.0.2'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'org.hibernate:hibernate-validator:8.0.1.Final'
 
     testImplementation 'io.quarkus:quarkus-junit5'
 
