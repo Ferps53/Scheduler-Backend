@@ -60,7 +60,6 @@ public class JwtController {
         } catch (ParseException e) {
             throw new BadRequestException(e.getMessage());
         }
-
     }
 
     private String generateToken(UserDTO user, boolean isRefreshToken) {
