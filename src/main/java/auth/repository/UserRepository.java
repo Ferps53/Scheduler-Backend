@@ -18,8 +18,8 @@ public class UserRepository implements PanacheRepository<User> {
                 .isPresent();
     }
 
-    public UserDTO findUserLogin(String username, String email) {
-        final var optionalUser = findUserByEmailOrUsername(username, email);
+    public UserDTO findUserLogin(String usernameOrEmail) {
+        final var optionalUser = findUserByEmailOrUsername(usernameOrEmail, usernameOrEmail);
         if (optionalUser.isPresent()) {
             return optionalUser.get();
         }
