@@ -3,7 +3,6 @@ package exceptions;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 @ApplicationScoped
@@ -21,7 +20,7 @@ public final class MessageTranslator {
                             )
                     )
                     .getString(messageCode);
-        } catch (MissingResourceException e) {
+        } catch (Exception e) {
             return messageCode;
         }
     }
