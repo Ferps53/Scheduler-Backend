@@ -11,11 +11,11 @@ import jakarta.validation.constraints.NotNull;
 public class User extends PanacheEntity {
 
     @NotNull(message = "user.username.notNull")
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     public String name;
 
     @NotNull(message = "user.email.notNull")
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     public String email;
 
     @NotNull(message = "user.password.notNull")
