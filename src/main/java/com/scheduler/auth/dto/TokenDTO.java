@@ -1,4 +1,4 @@
-package auth.dto;
+package com.scheduler.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

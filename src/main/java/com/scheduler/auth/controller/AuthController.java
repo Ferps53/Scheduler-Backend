@@ -1,13 +1,13 @@
-package auth.controller;
+package com.scheduler.auth.controller;
 
-import auth.dto.NewUserCreatedDTO;
-import auth.dto.TokenDTO;
-import auth.dto.UserDTO;
-import auth.mapper.UserMapper;
-import auth.model.User;
-import auth.repository.UserRepository;
-import exceptions.exception.BadRequestException;
-import exceptions.exception.UnauthorizedException;
+import com.scheduler.auth.dto.NewUserCreatedDTO;
+import com.scheduler.auth.dto.TokenDTO;
+import com.scheduler.auth.dto.UserDTO;
+import com.scheduler.auth.mapper.UserMapper;
+import com.scheduler.auth.model.User;
+import com.scheduler.auth.repository.UserRepository;
+import com.scheduler.exceptions.exception.BadRequestException;
+import com.scheduler.exceptions.exception.UnauthorizedException;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

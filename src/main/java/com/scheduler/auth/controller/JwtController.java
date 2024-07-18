@@ -1,10 +1,10 @@
-package auth.controller;
+package com.scheduler.auth.controller;
 
-import auth.dto.TokenDTO;
-import auth.dto.UserDTO;
-import auth.repository.UserRepository;
-import exceptions.exception.BadRequestException;
-import exceptions.exception.UnauthorizedException;
+import com.scheduler.auth.dto.TokenDTO;
+import com.scheduler.auth.dto.UserDTO;
+import com.scheduler.auth.repository.UserRepository;
+import com.scheduler.exceptions.exception.BadRequestException;
+import com.scheduler.exceptions.exception.UnauthorizedException;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
 import io.smallrye.jwt.build.Jwt;

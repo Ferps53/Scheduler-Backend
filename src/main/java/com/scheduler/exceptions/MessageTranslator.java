@@ -1,4 +1,4 @@
-package exceptions;
+package com.scheduler.exceptions;
 
 import jakarta.enterprise.context.ApplicationScoped;
 

@@ -1,8 +1,9 @@
-package auth.endpoint;
+package com.scheduler.auth.endpoint;
 
-import auth.controller.AuthController;
-import auth.dto.NewUserCreatedDTO;
-import auth.dto.TokenDTO;
+import com.scheduler.auth.annotation.PublicSession;
+import com.scheduler.auth.controller.AuthController;
+import com.scheduler.auth.dto.NewUserCreatedDTO;
+import com.scheduler.auth.dto.TokenDTO;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -19,6 +20,7 @@ public class AuthEndpoint {
     AuthController authController;
 
     @GET
+    @PublicSession
     @Path("sign-in")
     public Response signIn(
             @HeaderParam("Authorization") String authorization,
@@ -36,6 +38,7 @@ public class AuthEndpoint {
     }
 
     @GET
+    @PublicSession
     @Path("login")
     public Response login(
             @HeaderParam("Authorization") String authorization,
@@ -47,6 +50,7 @@ public class AuthEndpoint {
     }
 
     @GET
+    @PublicSession
     @Path("refresh")
     public Response refreshToken(
             @HeaderParam("Authorization") String authorization,

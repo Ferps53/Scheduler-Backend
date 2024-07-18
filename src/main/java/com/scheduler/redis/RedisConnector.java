@@ -1,6 +1,6 @@
-package redis;
+package com.scheduler.redis;
 
-import exceptions.exception.BadRequestException;
+import com.scheduler.exceptions.exception.BadRequestException;
 import io.quarkus.runtime.Startup;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Singleton;

@@ -1,6 +1,6 @@
-package exceptions;
+package com.scheduler.exceptions;
 
-import exceptions.exception.GenericException;
+import com.scheduler.exceptions.exception.GenericException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;

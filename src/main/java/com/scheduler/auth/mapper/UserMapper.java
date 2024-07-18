@@ -1,7 +1,7 @@
-package auth.mapper;
+package com.scheduler.auth.mapper;
 
-import auth.dto.NewUserCreatedDTO;
-import auth.model.User;
+import com.scheduler.auth.dto.NewUserCreatedDTO;
+import com.scheduler.auth.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

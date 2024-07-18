@@ -1,6 +1,6 @@
-package exceptions.exception;
+package com.scheduler.exceptions.exception;
 
-import exceptions.MessageTranslator;
+import com.scheduler.exceptions.MessageTranslator;
 import jakarta.ws.rs.core.Response;
 
 public class GenericException extends RuntimeException {

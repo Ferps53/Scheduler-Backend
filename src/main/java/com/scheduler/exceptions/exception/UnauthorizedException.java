@@ -1,4 +1,4 @@
-package exceptions.exception;
+package com.scheduler.exceptions.exception;
 
 import jakarta.ws.rs.core.Response;
 

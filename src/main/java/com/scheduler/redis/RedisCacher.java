@@ -1,7 +1,7 @@
-package redis;
+package com.scheduler.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import exceptions.exception.BadRequestException;
+import com.scheduler.exceptions.exception.BadRequestException;
 import jakarta.enterprise.context.ApplicationScoped;
 import redis.clients.jedis.Jedis;
 
