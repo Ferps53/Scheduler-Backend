@@ -45,4 +45,14 @@ public class AuthEndpoint {
         final TokenDTO token = authController.login(authorization, usernameOrEmail, password);
         return Response.ok(token).build();
     }
+
+    @GET
+    @Path("refresh")
+    public Response refreshToken(
+            @HeaderParam("Authorization") String authorization,
+            @QueryParam("refresh_token") String refreshToken
+    ) {
+        final TokenDTO token = authController.refreshToken(authorization, refreshToken);
+        return Response.ok(token).build();
+    }
 }

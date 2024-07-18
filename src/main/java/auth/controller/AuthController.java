@@ -85,7 +85,14 @@ public class AuthController {
         return jwtController.generateToken(user);
     }
 
-   private void validateBasic (String basic) {
+    public TokenDTO refreshToken(String basic, String refreshToken) {
+
+        validateBasic(basic);
+
+        return jwtController.refreshToken(refreshToken);
+    }
+
+    private void validateBasic(String basic) {
 
         if (basic == null || basic.isBlank() || !basic.toUpperCase().startsWith("BASIC "))
             throw new UnauthorizedException();
@@ -94,7 +101,7 @@ public class AuthController {
 
         if (!basic.substring(6).equals(expectedBase64))
             throw new UnauthorizedException();
-   }
+    }
 
     private String decode(String param) {
         return URLDecoder.decode(param, StandardCharsets.UTF_8);
