@@ -5,10 +5,7 @@ import com.scheduler.features.task.dto.NewTaskDTO;
 import com.scheduler.features.task.dto.TaskDTO;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.Claims;
@@ -37,6 +34,13 @@ public class TaskEndpoint {
     public Response getTaskById(@PathParam("id") Long taskId) {
         final TaskDTO task = taskController.getTaskById(taskId, Long.parseLong(userId));
         return Response.ok(task).build();
+    }
+
+    @PATCH
+    @Path("/{id}")
+    public Response patchTask(@PathParam("id") Long taskId, NewTaskDTO newTaskDTO) {
+        final TaskDTO taskDTO = taskController.patchTask(taskId, Long.parseLong(userId), newTaskDTO);
+        return Response.ok(taskDTO).build();
     }
 
     @POST

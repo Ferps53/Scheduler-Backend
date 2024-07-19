@@ -44,7 +44,21 @@ public class TaskController {
 
     public TaskDTO getTaskById(long taskId, long userId) {
 
-        return taskRepository.getTaskByid(taskId, userId);
+        return taskRepository.getTaskDTOById(taskId, userId);
+    }
+
+    @Transactional
+    public TaskDTO patchTask(long taskId, long userId, NewTaskDTO newTaskDTO) {
+
+        final Task task = taskRepository.getTaskById(taskId, userId);
+
+        task.title = newTaskDTO.title();
+        task.description = newTaskDTO.description();
+        task.expiresIn = newTaskDTO.expiresIn();
+
+        task.persist();
+
+        return taskMapper.toTaskDTO(task);
     }
 
     public List<TaskDTO> getTasksNotInTrashBin(long userId) {
