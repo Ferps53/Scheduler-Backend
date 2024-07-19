@@ -52,6 +52,13 @@ public class TaskEndpoint {
         return Response.ok(taskDTO).build();
     }
 
+    @PUT
+    @Path("send-to-trash-bin/{id}")
+    public Response sendToTrashBin(@PathParam("id") Long taskId) {
+        final TaskDTO taskDTO = taskController.sendTaskToTrashBin(taskId, Long.parseLong(userId));
+        return Response.ok(taskDTO).build();
+    }
+
     @POST
     public Response createTask(NewTaskDTO newTaskDTO) {
         final TaskDTO newTask = taskController.createTask(newTaskDTO, Long.parseLong(userId));

@@ -74,6 +74,19 @@ public class TaskController {
         return taskMapper.toTaskDTO(task);
     }
 
+    @Transactional
+    public TaskDTO sendTaskToTrashBin(long taskId, long userId) {
+
+        final Task task = taskRepository.getTaskById(taskId, userId);
+
+        task.isInTrashBin = !task.isInTrashBin;
+        task.sentToTrashBinAt = task.isInTrashBin ? LocalDateTime.now() : null;
+
+        task.persist();
+
+        return taskMapper.toTaskDTO(task);
+    }
+
     public List<TaskDTO> getTasksNotInTrashBin(long userId) {
 
         final Optional<User> optionalUser = User.findByIdOptional(userId);
