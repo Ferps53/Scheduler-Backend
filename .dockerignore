@@ -3,4 +3,6 @@ README.md
 base.env
 .env
 /build
+/.git
+/.gradle
 gradlew.bat
