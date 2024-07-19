@@ -42,6 +42,11 @@ public class TaskController {
         return taskMapper.toTaskDTO(task);
     }
 
+    public TaskDTO getTaskById(long taskId, long userId) {
+
+        return taskRepository.getTaskByid(taskId, userId);
+    }
+
     public List<TaskDTO> getTasksNotInTrashBin(long userId) {
 
         final Optional<User> optionalUser = User.findByIdOptional(userId);

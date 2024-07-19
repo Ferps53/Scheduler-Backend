@@ -1,5 +1,6 @@
 package com.scheduler.features.task.repository;
 
+import com.scheduler.core.exceptions.exception.NotFoundException;
 import com.scheduler.features.task.dto.TaskDTO;
 import com.scheduler.features.task.model.Task;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
@@ -13,12 +14,32 @@ public class TaskRepository implements PanacheRepository<Task> {
 
     public List<TaskDTO> listTasksNotInTrashBin(long userId) {
         return find("""
-                FROM Task t
-                LEFT JOIN t.user u
-                WHERE isInTrashBin = false AND
-                u.id = :userId
-                """,
+                        FROM Task t
+                        LEFT JOIN t.user u
+                        WHERE isInTrashBin = false AND
+                        u.id = :userId
+                        """,
                 Parameters.with("userId", userId))
                 .project(TaskDTO.class).list();
+    }
+
+    public TaskDTO getTaskByid(long taskId, long userId) {
+        final var optionalTask = find(
+                """
+                        FROM Task t
+                        LEFT JOIN t.user u
+                        WHERE t.id = ?1 AND
+                        u.id = ?2
+                        """,
+                taskId,
+                userId
+        )
+                .project(TaskDTO.class)
+                .firstResultOptional();
+
+        if (optionalTask.isEmpty())
+            throw new NotFoundException("task.notFound");
+
+        return optionalTask.get();
     }
 }
