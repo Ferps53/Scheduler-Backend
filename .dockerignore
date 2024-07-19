@@ -1,5 +1,6 @@
-*
-!build/*-runner
-!build/*-runner.jar
-!build/lib/*
-!build/quarkus-app/*
+gradlew
+README.md
+base.env
+.env
+/build
+gradlew.bat
