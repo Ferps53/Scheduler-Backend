@@ -64,4 +64,11 @@ public class TaskEndpoint {
         final TaskDTO newTask = taskController.createTask(newTaskDTO, Long.parseLong(userId));
         return Response.ok(newTask).build();
     }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteTask(@PathParam("id") Long taskId) {
+        taskController.deleteTask(taskId, Long.parseLong(userId));
+        return Response.ok().build();
+    }
 }

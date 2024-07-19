@@ -95,4 +95,11 @@ public class TaskController {
 
         return taskRepository.listTasksNotInTrashBin(userId);
     }
+
+    @Transactional
+    public void deleteTask(long taskId, long userId) {
+
+        final Task task = taskRepository.getTaskById(taskId, userId);
+        task.delete();
+    }
 }
