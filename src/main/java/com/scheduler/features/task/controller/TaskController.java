@@ -61,6 +61,19 @@ public class TaskController {
         return taskMapper.toTaskDTO(task);
     }
 
+    @Transactional
+    public TaskDTO markTaskAsCompleted(long taskId, long userId) {
+
+        final Task task = taskRepository.getTaskById(taskId, userId);
+
+        task.isConcluded = !task.isConcluded;
+        task.concludedAt = task.isConcluded ? LocalDateTime.now() : null;
+
+        task.persist();
+
+        return taskMapper.toTaskDTO(task);
+    }
+
     public List<TaskDTO> getTasksNotInTrashBin(long userId) {
 
         final Optional<User> optionalUser = User.findByIdOptional(userId);

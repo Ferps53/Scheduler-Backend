@@ -3,6 +3,7 @@ package com.scheduler.features.task.endpoint;
 import com.scheduler.features.task.controller.TaskController;
 import com.scheduler.features.task.dto.NewTaskDTO;
 import com.scheduler.features.task.dto.TaskDTO;
+import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RequestScoped
 @Path("task")
+@PermitAll
 public class TaskEndpoint {
 
     @Inject
@@ -37,9 +39,16 @@ public class TaskEndpoint {
     }
 
     @PATCH
-    @Path("/{id}")
+    @Path("{id}")
     public Response patchTask(@PathParam("id") Long taskId, NewTaskDTO newTaskDTO) {
         final TaskDTO taskDTO = taskController.patchTask(taskId, Long.parseLong(userId), newTaskDTO);
+        return Response.ok(taskDTO).build();
+    }
+
+    @PUT
+    @Path("mark-as-concluded/{id}")
+    public Response markTaskAsConcluded(@PathParam("id") Long taskId) {
+        final TaskDTO taskDTO = taskController.markTaskAsCompleted(taskId, Long.parseLong(userId));
         return Response.ok(taskDTO).build();
     }
 
