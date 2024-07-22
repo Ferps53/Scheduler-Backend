@@ -9,6 +9,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.quarkus:quarkus-mailer'
     implementation 'io.quarkus:quarkus-security-jpa'
     implementation 'io.quarkus:quarkus-smallrye-openapi'
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
@@ -22,6 +23,7 @@ dependencies {
     implementation 'redis.clients:jedis:5.0.2'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     implementation 'org.hibernate:hibernate-validator:8.0.1.Final'
+    implementation 'commons-io:commons-io:2.16.1'
 
     testImplementation 'io.quarkus:quarkus-junit5'
 
