@@ -59,4 +59,16 @@ public class AuthEndpoint {
         final TokenDTO token = authController.refreshToken(authorization, refreshToken);
         return Response.ok(token).build();
     }
+
+    @GET
+    @PublicSession
+    @Path("confirm-email")
+    public Response confirmEmail(
+            @HeaderParam("Authorization") String authorization,
+            @QueryParam("confirmation_code") String confirmationCode,
+            @QueryParam("email") String email
+    ) {
+        authController.confirmEmail(authorization, confirmationCode, email);
+        return Response.ok().build();
+    }
 }
