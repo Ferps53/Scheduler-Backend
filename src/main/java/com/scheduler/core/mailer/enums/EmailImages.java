@@ -3,19 +3,19 @@ package com.scheduler.core.mailer.enums;
 public enum EmailImages {
 
     LOGO(
-            "email/images/logo.png",
+            "/email/images/logo.png",
             "logo@scheduler",
             "image/png",
             "Logo do Scheduler"
     );
 
-    final private String imageAddress;
+    private final String imageAddress;
 
-    final private String cid;
+    private final String cid;
 
-    final private String type;
+    private final String type;
 
-    final private String name;
+    private final String name;
 
     EmailImages(String imageAddress, String cid, String type, String name) {
         this.imageAddress = imageAddress;

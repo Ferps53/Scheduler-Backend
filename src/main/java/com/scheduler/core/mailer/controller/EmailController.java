@@ -7,6 +7,7 @@ import com.scheduler.core.mailer.enums.EmailImages;
 import com.scheduler.core.mailer.enums.EmailModels;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.commons.io.IOUtils;
 
@@ -17,6 +18,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+@ApplicationScoped
 public class EmailController {
 
     @Inject
@@ -27,7 +29,7 @@ public class EmailController {
             String html = loadTemplate(email.model());
             html = replaceContents(email.contents(), html);
 
-            Mail mail = Mail.withHtml(email.address(), email.model().subject, html);
+            final Mail mail = Mail.withHtml(email.address(), email.model().getSubject(), html);
             loadAssets(email.images(), mail);
 
             mailer.send(mail);
@@ -38,7 +40,7 @@ public class EmailController {
 
     private String loadTemplate(EmailModels model) {
 
-        try (InputStream inputStream = getClass().getResourceAsStream(model.templateAddress)) {
+        try (InputStream inputStream = getClass().getResourceAsStream(model.getTemplateAddress())) {
 
             if (inputStream == null) {
                 throw new BadRequestException("Template not found");

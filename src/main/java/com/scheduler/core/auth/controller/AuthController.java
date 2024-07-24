@@ -4,10 +4,16 @@ import com.scheduler.core.auth.dto.NewUserCreatedDTO;
 import com.scheduler.core.auth.dto.TokenDTO;
 import com.scheduler.core.auth.dto.UserDTO;
 import com.scheduler.core.auth.mapper.UserMapper;
+import com.scheduler.core.auth.model.ConfirmationCode;
 import com.scheduler.core.auth.model.User;
 import com.scheduler.core.auth.repository.UserRepository;
 import com.scheduler.core.exceptions.exception.BadRequestException;
 import com.scheduler.core.exceptions.exception.UnauthorizedException;
+import com.scheduler.core.mailer.controller.EmailController;
+import com.scheduler.core.mailer.dto.EmailContentsDTO;
+import com.scheduler.core.mailer.dto.EmailDTO;
+import com.scheduler.core.mailer.enums.EmailImages;
+import com.scheduler.core.mailer.enums.EmailModels;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -17,6 +23,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 
 @ApplicationScoped
 public class AuthController {
@@ -35,6 +42,12 @@ public class AuthController {
 
     @Inject
     JwtController jwtController;
+
+    @Inject
+    EmailController emailController;
+
+    @Inject
+    ConfirmationCodeController confirmationCodeController;
 
     @Transactional
     public NewUserCreatedDTO createNewUser(
@@ -61,6 +74,7 @@ public class AuthController {
         final User user = new User(username, email, password);
         user.persist();
 
+        sendConfirmationEmail(user);
         return userMapper.toUserCreatedDTO(user);
     }
 
@@ -92,6 +106,24 @@ public class AuthController {
         return jwtController.refreshToken(refreshToken);
     }
 
+    @Transactional
+    public void confirmEmail(String basic, String confirmationCode, String email) {
+
+        validateBasic(basic);
+
+        try {
+
+            confirmationCodeController.validateCode(confirmationCode, email);
+        } catch (BadRequestException e) {
+
+            final ConfirmationCode oldCode = ConfirmationCode.find("code = ?1 and user.email = ?2", confirmationCode, email)
+                    .firstResult();
+            sendConfirmationEmail(oldCode.user);
+            oldCode.delete();
+            throw new BadRequestException("user.new.code.sent");
+        }
+    }
+
     private void validateBasic(String basic) {
 
         if (basic == null || basic.isBlank() || !basic.toUpperCase().startsWith("BASIC "))
@@ -105,5 +137,18 @@ public class AuthController {
 
     private String decode(String param) {
         return URLDecoder.decode(param, StandardCharsets.UTF_8);
+    }
+
+    private void sendConfirmationEmail(User user) {
+
+        final String code = confirmationCodeController.createCode(6, user);
+
+        final var contents = List.of(
+                new EmailContentsDTO("-username-", user.name, false),
+                new EmailContentsDTO("-code-", code, false)
+        );
+
+        final var images = List.of(EmailImages.LOGO);
+        emailController.sendEmail(new EmailDTO(user.email, EmailModels.EMAIL_CONFIRMATION, contents, images));
     }
 }
