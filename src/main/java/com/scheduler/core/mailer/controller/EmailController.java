@@ -15,7 +15,6 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
@@ -44,8 +43,6 @@ public class EmailController {
 
         System.out.println(Thread.currentThread());
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(model.getTemplateAddress())) {
-
-
 
             if (inputStream == null) {
                 throw new BadRequestException("Template not found");
