@@ -71,4 +71,15 @@ public class AuthEndpoint {
         authController.confirmEmail(authorization, confirmationCode, email);
         return Response.ok().build();
     }
+
+    @GET
+    @PublicSession
+    @Path("resend-confirmation-email")
+    public Response resendConfirmationEmail(
+            @HeaderParam("Authorization") String authorization,
+            @QueryParam("email") String email
+    ) {
+        authController.resendConfirmationEmail(authorization, email);
+        return Response.ok().build();
+    }
 }

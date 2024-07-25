@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 
+@Transactional
 @ApplicationScoped
 public class AuthController {
 
@@ -49,7 +50,6 @@ public class AuthController {
     @Inject
     ConfirmationCodeController confirmationCodeController;
 
-    @Transactional
     public NewUserCreatedDTO createNewUser(
             String basic,
             String username,
@@ -78,7 +78,6 @@ public class AuthController {
         return userMapper.toUserCreatedDTO(user);
     }
 
-    @Transactional
     public TokenDTO login(String basic, String usernameOrEmail, String password) {
 
         validateBasic(basic);
@@ -106,7 +105,6 @@ public class AuthController {
         return jwtController.refreshToken(refreshToken);
     }
 
-    @Transactional
     public void confirmEmail(String basic, String confirmationCode, String email) {
 
         validateBasic(basic);
@@ -124,6 +122,14 @@ public class AuthController {
             oldCode.delete();
             throw new BadRequestException("user.new.code.sent");
         }
+    }
+
+    public void resendConfirmationEmail (String basic, String email) {
+
+        validateBasic(basic);
+        User user = userMapper.toUser(userRepository.findUserLogin(email));
+        sendConfirmationEmail(user);
+
     }
 
     private void validateBasic(String basic) {
