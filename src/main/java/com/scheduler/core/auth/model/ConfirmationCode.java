@@ -15,7 +15,7 @@ public class ConfirmationCode extends PanacheEntity {
     public String code;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user.id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     public User user;
 
     @Column(unique = true, nullable = false, name = "expiry_date")
