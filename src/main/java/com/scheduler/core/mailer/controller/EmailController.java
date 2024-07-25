@@ -40,7 +40,7 @@ public class EmailController {
 
     private String loadTemplate(EmailModels model) {
 
-        try (InputStream inputStream = getClass().getResourceAsStream(model.getTemplateAddress())) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(model.getTemplateAddress())) {
 
             if (inputStream == null) {
                 throw new BadRequestException("Template not found");
