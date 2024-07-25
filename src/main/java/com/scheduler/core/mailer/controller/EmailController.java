@@ -40,7 +40,8 @@ public class EmailController {
 
     private String loadTemplate(EmailModels model) {
 
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(model.getTemplateAddress())) {
+        System.out.println(Thread.currentThread());
+        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(model.getTemplateAddress())) {
 
             if (inputStream == null) {
                 throw new BadRequestException("Template not found");
@@ -66,9 +67,14 @@ public class EmailController {
 
         for (EmailImages image : images) {
 
-            final URL imageUrl = getClass().getResource(image.getImageAddress());
+
+            final URL imageUrl = Thread.currentThread().getContextClassLoader().getResource(image.getImageAddress());
+
+
             if (imageUrl == null) throw new BadRequestException();
 
+            System.out.println(imageUrl);
+            System.out.println(imageUrl.getFile());
             File imageFile = new File(imageUrl.getFile());
 
             mail.addInlineAttachment(image.getName(), imageFile, image.getType(), image.getCid());
