@@ -9,14 +9,15 @@ import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class EmailController {
@@ -67,17 +68,27 @@ public class EmailController {
 
         for (EmailImages image : images) {
 
+            try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(image.getImageAddress())) {
 
-            final URL imageUrl = Thread.currentThread().getContextClassLoader().getResource(image.getImageAddress());
+                System.out.println(Thread.currentThread());
+                System.out.println(Thread.currentThread().getContextClassLoader());
+                System.out.println(Thread.currentThread().getContextClassLoader().getResourceAsStream(image.getImageAddress()));
+                System.out.println(image.getImageAddress());
+
+                if (inputStream == null) {
+                    throw new BadRequestException("Template not found");
+                }
+
+                final File file = File.createTempFile(UUID.randomUUID().toString(), "." + image.getType().split("/")[1]);
+                FileUtils.copyInputStreamToFile(inputStream, file);
+
+                System.out.println(file);
 
 
-            if (imageUrl == null) throw new BadRequestException();
-
-            System.out.println(imageUrl);
-            System.out.println(imageUrl.getFile());
-            File imageFile = new File(imageUrl.getFile());
-
-            mail.addInlineAttachment(image.getName(), imageFile, image.getType(), image.getCid());
+                mail.addInlineAttachment(image.getName(), file, image.getType(), image.getCid());
+            } catch (IOException e) {
+                throw new BadRequestException(e);
+            }
         }
     }
 }
