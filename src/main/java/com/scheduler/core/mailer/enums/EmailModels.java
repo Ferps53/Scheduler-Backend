@@ -3,7 +3,7 @@ package com.scheduler.core.mailer.enums;
 public enum EmailModels {
 
     EMAIL_CONFIRMATION(
-            "/email/confirm_email.html",
+            "email/confirm_email.html",
             "Confirme seu email"
     );
 
