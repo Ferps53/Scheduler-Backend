@@ -27,8 +27,13 @@ public class UserRepository implements PanacheRepository<User> {
         throw new BadRequestException("user.login.password.incorrect");
     }
 
+    public void confirmEmail(String email) {
+
+        update("set emailConfirmed = true where email = ?1", email);
+    }
+
     private Optional<UserDTO> findUserByEmailOrUsername(String username, String email) {
-         return find(
+        return find(
                 "name = :username OR email = :email",
                 Parameters.with("username", username)
                         .and("email", email)
