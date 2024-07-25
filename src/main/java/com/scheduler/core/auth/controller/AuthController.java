@@ -114,6 +114,8 @@ public class AuthController {
         try {
 
             confirmationCodeController.validateCode(confirmationCode, email);
+            userRepository.confirmEmail(email);
+
         } catch (BadRequestException e) {
 
             final ConfirmationCode oldCode = ConfirmationCode.find("code = ?1 and user.email = ?2", confirmationCode, email)
