@@ -22,7 +22,7 @@ public class ConfirmationCode extends PanacheEntity {
     public ConfirmationCode(String code, User user) {
         this.code = code;
         this.user = user;
-        this.expiryDate = LocalDateTime.now().plusSeconds(1);
+        this.expiryDate = LocalDateTime.now().plusMinutes(15);
     }
 
     public ConfirmationCode() {
