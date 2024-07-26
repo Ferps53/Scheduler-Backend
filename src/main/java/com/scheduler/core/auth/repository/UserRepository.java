@@ -7,6 +7,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -30,6 +31,11 @@ public class UserRepository implements PanacheRepository<User> {
     public void confirmEmail(String email) {
 
         update("set emailConfirmed = true where email = ?1", email);
+    }
+
+    public List<User> getInactiveUsersWithoutEmailConfirmation() {
+
+        return find("emailConfirmed = false").list();
     }
 
     private Optional<UserDTO> findUserByEmailOrUsername(String username, String email) {
