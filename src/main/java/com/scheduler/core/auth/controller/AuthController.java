@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 
-@Transactional
+@Transactional(dontRollbackOn = BadRequestException.class)
 @ApplicationScoped
 public class AuthController {
 
@@ -116,10 +116,11 @@ public class AuthController {
 
         } catch (BadRequestException e) {
 
-            final ConfirmationCode oldCode = ConfirmationCode.find("code = ?1 and user.email = ?2", confirmationCode, email)
+            final ConfirmationCode oldCode = ConfirmationCode.find("user.email = ?1", email)
                     .firstResult();
             sendConfirmationEmail(oldCode.user);
             oldCode.delete();
+
             throw new BadRequestException("user.new.code.sent");
         }
     }
