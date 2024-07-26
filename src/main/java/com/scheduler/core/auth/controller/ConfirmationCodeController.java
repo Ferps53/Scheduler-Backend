@@ -3,6 +3,7 @@ package com.scheduler.core.auth.controller;
 import com.scheduler.core.auth.model.ConfirmationCode;
 import com.scheduler.core.auth.model.User;
 import com.scheduler.core.exceptions.exception.BadRequestException;
+import com.scheduler.core.exceptions.exception.NotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class ConfirmationCodeController {
         final ConfirmationCode confirmationCode = ConfirmationCode.find("code = ?1 and user.email = ?2", code, email).firstResult();
 
         if (confirmationCode == null)
-            throw new BadRequestException("Invalid confirmation code");
+            throw new NotFoundException("Invalid confirmation code");
 
         if (confirmationCode.expiryDate.isBefore(LocalDateTime.now())) {
             throw new BadRequestException("Expired confirmation code");
