@@ -24,6 +24,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional(dontRollbackOn = BadRequestException.class)
 @ApplicationScoped
@@ -128,9 +129,10 @@ public class AuthController {
     public void resendConfirmationEmail (String basic, String email) {
 
         validateBasic(basic);
-        User user = userMapper.toUser(userRepository.findUserLogin(email));
-        sendConfirmationEmail(user);
+        Optional<User> userOptional = User.find("email = ?1", email).firstResultOptional();
 
+        //Not throwing an error hides the email registered in the db
+        userOptional.ifPresent((this::sendConfirmationEmail));
     }
 
     private void validateBasic(String basic) {
