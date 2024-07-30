@@ -82,9 +82,7 @@ class AuthEndpointTestIT {
 
     }
 
-
     String generateBasic() {
         return Base64.getEncoder().encodeToString((basicUsername + ":" + basicPassword).getBytes());
     }
-
 }
