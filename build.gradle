@@ -27,6 +27,9 @@ dependencies {
     implementation 'commons-io:commons-io:2.16.1'
 
     testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.quarkus:quarkus-junit5-mockito'
+    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'io.quarkus:quarkus-jdbc-h2'
 
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 }
