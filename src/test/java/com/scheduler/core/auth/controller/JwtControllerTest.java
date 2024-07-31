@@ -10,7 +10,6 @@ import io.quarkus.test.junit.QuarkusTestProfile;
 import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.consumer.InvalidJwtException;
@@ -43,9 +42,6 @@ class JwtControllerTest implements QuarkusTestProfile {
     private static JsonWebToken jwtRefreshInvalidIsRefreshClaim;
     private static AutoCloseable mockAutoCloseable;
 
-    @ConfigProperty(name = "mp.jwt.verify.issuer")
-    String issuer;
-
     @Mock(name = "jwtParser")
     JWTParser mockJwtParser;
 
@@ -77,7 +73,7 @@ class JwtControllerTest implements QuarkusTestProfile {
     @BeforeEach
     void init() {
         mockAutoCloseable = MockitoAnnotations.openMocks(this);
-        jwtController.issuer = issuer;
+        jwtController.issuer = "test";
     }
 
     @Test

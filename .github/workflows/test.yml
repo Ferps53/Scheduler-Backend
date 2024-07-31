@@ -19,4 +19,4 @@ jobs:
           java-version: 21
           cache: 'gradle'
       - uses: gradle/gradle-build-action@v3
-      - run: ./gradlew build --no-daemon
+      - run: ./gradlew clean check
