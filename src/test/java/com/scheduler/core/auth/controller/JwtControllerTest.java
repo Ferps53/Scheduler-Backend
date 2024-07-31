@@ -14,6 +14,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.consumer.InvalidJwtException;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,7 @@ class JwtControllerTest implements QuarkusTestProfile {
     private static JsonWebToken jwtRefreshInvalidExpiration;
     private static JsonWebToken jwtRefreshNullIsRefreshClaim;
     private static JsonWebToken jwtRefreshInvalidIsRefreshClaim;
+    private static AutoCloseable mockAutoCloseable;
 
     @ConfigProperty(name = "mp.jwt.verify.issuer")
     String issuer;
@@ -67,9 +69,14 @@ class JwtControllerTest implements QuarkusTestProfile {
         }
     }
 
+    @AfterAll
+    static void clearMocks() throws Exception {
+        mockAutoCloseable.close();
+    }
+
     @BeforeEach
     void init() {
-        MockitoAnnotations.openMocks(this);
+        mockAutoCloseable = MockitoAnnotations.openMocks(this);
         jwtController.issuer = issuer;
     }
 
@@ -82,10 +89,9 @@ class JwtControllerTest implements QuarkusTestProfile {
 
     @Test
     void verifyInvalidIssuerRefreshToken() {
+
         try {
-
             when(mockJwtParser.parse(anyString())).thenReturn(jwtRefreshInvalidIssuer);
-
             assertThrows(UnauthorizedException.class, () -> jwtController.refreshToken(""));
         } catch (ParseException e) {
             fail("Failed to parse accessToken");
@@ -100,7 +106,6 @@ class JwtControllerTest implements QuarkusTestProfile {
 
         final var tokenDTO = jwtController.generateToken(testUserNotInDb);
         final var refreshedToken = jwtController.refreshToken(tokenDTO.refreshToken());
-
         assertNotNull(refreshedToken);
     }
 
@@ -109,7 +114,6 @@ class JwtControllerTest implements QuarkusTestProfile {
 
         when(userRepository.findUserDTOById(anyLong())).thenReturn(null);
         when(mockJwtParser.parse(anyString())).thenReturn(jwtRefresh);
-
         assertThrows(UnauthorizedException.class, () -> jwtController.refreshToken(""));
     }
 
