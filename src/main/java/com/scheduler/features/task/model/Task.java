@@ -3,7 +3,6 @@ package com.scheduler.features.task.model;
 import com.scheduler.core.auth.model.User;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -12,7 +11,6 @@ import java.time.LocalDateTime;
 @Table(name = "task")
 public class Task extends PanacheEntity {
 
-    @NotNull(message = "task.title.notNull")
     @Column(name = "title", nullable = false)
     public String title;
 
