@@ -38,6 +38,12 @@ public class UserRepository implements PanacheRepository<User> {
         return find("emailConfirmed = false").list();
     }
 
+    public UserDTO findUserDTOById(Long id) {
+        return find("id", id)
+                .project(UserDTO.class)
+                .firstResult();
+    }
+
     private Optional<UserDTO> findUserByEmailOrUsername(String username, String email) {
         return find(
                 "name = :username OR email = :email",

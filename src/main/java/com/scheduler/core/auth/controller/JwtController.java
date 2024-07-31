@@ -48,9 +48,7 @@ public class JwtController {
             if (isRefresh == null || isRefresh.equals("false"))
                 throw new UnauthorizedException();
 
-            final var user = userRepository.find("id", Long.valueOf(jwt.getSubject()))
-                    .project(UserDTO.class)
-                    .firstResult();
+            final var user = userRepository.findUserDTOById(Long.valueOf(jwt.getSubject()));
 
             if (user == null)
                 throw new UnauthorizedException();
