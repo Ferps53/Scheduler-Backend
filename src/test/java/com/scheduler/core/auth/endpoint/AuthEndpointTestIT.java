@@ -79,7 +79,6 @@ class AuthEndpointTestIT {
                 .get("/auth/login")
                 .then()
                 .statusCode(200);
-
     }
 
     String generateBasic() {
