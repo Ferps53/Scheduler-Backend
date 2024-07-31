@@ -64,7 +64,7 @@ public class JwtController {
 
     private String generateToken(UserDTO user, boolean isRefreshToken) {
         final Instant issuedAt = Instant.now();
-        return Jwt.issuer("Scheduler")
+        return Jwt.issuer(issuer)
                 .issuedAt(issuedAt)
                 .subject(user.id().toString())
                 .expiresAt(isRefreshToken
