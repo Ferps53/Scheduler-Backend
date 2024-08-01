@@ -25,6 +25,15 @@ public class ConfirmationCode extends PanacheEntity {
         this.expiryDate = LocalDateTime.now().plusMinutes(15);
     }
 
+    @Override
+    public String toString() {
+        return "ConfirmationCode{" +
+                "code='" + code + '\'' +
+                ", user=" + user +
+                ", expiryDate=" + expiryDate +
+                '}';
+    }
+
     public ConfirmationCode() {
     }
 }

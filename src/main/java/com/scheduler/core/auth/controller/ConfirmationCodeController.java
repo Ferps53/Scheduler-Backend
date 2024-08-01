@@ -2,23 +2,26 @@ package com.scheduler.core.auth.controller;
 
 import com.scheduler.core.auth.model.ConfirmationCode;
 import com.scheduler.core.auth.model.User;
+import com.scheduler.core.auth.repository.ConfirmationCodeRepository;
 import com.scheduler.core.exceptions.exception.BadRequestException;
 import com.scheduler.core.exceptions.exception.NotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Random;
 
 @ApplicationScoped
 public class ConfirmationCodeController {
 
     private static final Random RANDOM = new Random();
+    @Inject
+    ConfirmationCodeRepository repository;
 
     public String createCode(int size, User user) {
 
         String code = generateCode(size);
-        List<ConfirmationCode> confirmationCodes = ConfirmationCode.listAll();
+        final var confirmationCodes = repository.listAll();
 
         for (ConfirmationCode confirmationCode : confirmationCodes) {
 
@@ -27,13 +30,15 @@ public class ConfirmationCodeController {
             }
         }
 
-        new ConfirmationCode(code, user).persist();
+        final var confirmationCode = new ConfirmationCode(code, user);
+
+        repository.persist(confirmationCode);
         return code;
     }
 
     public void validateCode(String code, String email) {
 
-        final ConfirmationCode confirmationCode = ConfirmationCode.find("code = ?1 and user.email = ?2", code, email).firstResult();
+        final ConfirmationCode confirmationCode = repository.findConfirmationCodeByCodeAndUserEmail(code, email);
 
         if (confirmationCode == null)
             throw new NotFoundException("Invalid confirmation code");
@@ -43,12 +48,12 @@ public class ConfirmationCodeController {
         }
 
         // Deletes the code so it isn't used twice
-        confirmationCode.delete();
+        repository.delete(confirmationCode);
     }
 
     private String generateCode(int size) {
 
-        StringBuilder randomCode = new StringBuilder();
+        final StringBuilder randomCode = new StringBuilder();
         for (int i = 0; i < size; i++) {
             randomCode.append(RANDOM.nextInt(10));
         }
