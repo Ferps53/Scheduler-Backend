@@ -79,7 +79,7 @@
 FROM gradle:8.9.0-jdk21-alpine AS build
 WORKDIR /usr/app/
 COPY . .
-RUN gradle build --scan
+RUN gradle build -x test
 
 FROM registry.access.redhat.com/ubi8/openjdk-21:1.19
 

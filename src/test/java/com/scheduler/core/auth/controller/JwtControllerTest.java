@@ -5,11 +5,12 @@ import com.scheduler.core.auth.dto.UserDTO;
 import com.scheduler.core.auth.repository.UserRepository;
 import com.scheduler.core.exceptions.exception.BadRequestException;
 import com.scheduler.core.exceptions.exception.UnauthorizedException;
+import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.QuarkusTestProfile;
 import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.consumer.InvalidJwtException;
@@ -17,12 +18,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -30,8 +26,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @QuarkusTest
-@ExtendWith(MockitoExtension.class)
-class JwtControllerTest implements QuarkusTestProfile {
+class JwtControllerTest {
 
     private static final UserDTO testUser = new UserDTO(1L, "test", "test@gmail.com", "", true);
     private static final UserDTO testUserNotInDb = new UserDTO(3L, "test", "test@gmail.com", "", true);
@@ -42,14 +37,13 @@ class JwtControllerTest implements QuarkusTestProfile {
     private static JsonWebToken jwtRefreshInvalidIsRefreshClaim;
     private static AutoCloseable mockAutoCloseable;
 
-    @Mock(name = "jwtParser")
+    @InjectMock
     JWTParser mockJwtParser;
 
-    @Mock
+    @InjectMock
     UserRepository userRepository;
 
-    @Spy
-    @InjectMocks
+    @Inject
     JwtController jwtController;
 
     @BeforeAll
