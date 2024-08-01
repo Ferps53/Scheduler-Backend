@@ -9,6 +9,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.quarkus:quarkus-smallrye-jwt-build'
     implementation 'io.quarkus:quarkus-scheduler'
     implementation 'io.quarkus:quarkus-mailer'
     implementation 'io.quarkus:quarkus-security-jpa'
@@ -23,7 +24,6 @@ dependencies {
     implementation 'io.quarkus:quarkus-arc'
     implementation 'redis.clients:jedis:5.0.2'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-    implementation 'org.hibernate:hibernate-validator:8.0.1.Final'
     implementation 'commons-io:commons-io:2.16.1'
 
     testImplementation 'io.quarkus:quarkus-junit5'
@@ -43,8 +43,12 @@ java {
 }
 
 test {
+    if (System.properties['test.profile'] != 'integration') {
+        exclude '**/endpoint/**'
+    }
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
 }
+
 compileJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-parameters'

@@ -48,9 +48,7 @@ public class JwtController {
             if (isRefresh == null || isRefresh.equals("false"))
                 throw new UnauthorizedException();
 
-            final var user = userRepository.find("id", Long.valueOf(jwt.getSubject()))
-                    .project(UserDTO.class)
-                    .firstResult();
+            final var user = userRepository.findUserDTOById(Long.valueOf(jwt.getSubject()));
 
             if (user == null)
                 throw new UnauthorizedException();
@@ -64,7 +62,7 @@ public class JwtController {
 
     private String generateToken(UserDTO user, boolean isRefreshToken) {
         final Instant issuedAt = Instant.now();
-        return Jwt.issuer("Scheduler")
+        return Jwt.issuer(issuer)
                 .issuedAt(issuedAt)
                 .subject(user.id().toString())
                 .expiresAt(isRefreshToken
