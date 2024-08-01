@@ -20,9 +20,12 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
+        with: 
+          face-depth: 0
       - uses: super-linter/super-linter@v6.8.0
         env:
-          # To report GitHub Actions status checks
+          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_ALL_JAVA: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   test:
     name: Test the code
