@@ -17,7 +17,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: 21
-      - uses: gradle/gradle-build-action@v3
+      - uses: gradle/actions/setup-gradle@v3
       - run: ./gradlew clean check -Dtest.profile=integration
         env:
           BASIC_PASSWORD: ${{ secrets.BASIC_PASSWORD }}
