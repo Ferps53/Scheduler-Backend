@@ -24,6 +24,7 @@ jobs:
           face-depth: 0
       - uses: super-linter/super-linter@v6.8.0
         env:
+          DEFAULT_BRANCH: dev
           VALIDATE_ALL_CODEBASE: true
           VALIDATE_ALL_JAVA: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
