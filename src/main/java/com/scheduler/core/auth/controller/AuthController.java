@@ -73,7 +73,7 @@ public class AuthController {
         }
 
         final User user = new User(username, email, password);
-        user.persist();
+        userRepository.persist(user);
 
         sendConfirmationEmail(user);
         return userMapper.toUserCreatedDTO(user);
