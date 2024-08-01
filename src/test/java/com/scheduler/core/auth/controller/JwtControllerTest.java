@@ -14,16 +14,8 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -40,7 +32,6 @@ class JwtControllerTest {
     private static JsonWebToken jwtRefreshInvalidExpiration;
     private static JsonWebToken jwtRefreshNullIsRefreshClaim;
     private static JsonWebToken jwtRefreshInvalidIsRefreshClaim;
-    private static AutoCloseable mockAutoCloseable;
 
     @InjectMock
     JWTParser mockJwtParser;
@@ -62,17 +53,6 @@ class JwtControllerTest {
         } catch (InvalidJwtException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @AfterAll
-    static void clearMocks() throws Exception {
-        mockAutoCloseable.close();
-    }
-
-    @BeforeEach
-    void init() {
-        mockAutoCloseable = MockitoAnnotations.openMocks(this);
-        jwtController.issuer = "test";
     }
 
     @Test
