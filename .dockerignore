@@ -5,4 +5,6 @@ base.env
 /build
 /.git
 /.gradle
+/.idea
+./.github
 gradlew.bat
