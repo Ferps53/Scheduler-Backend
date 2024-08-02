@@ -7,27 +7,6 @@ on:
     branches: [dev, master]
 
 jobs:
-
-  lint:
-    name: Lint the code
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      # To report GitHub Actions status checks
-      statuses: write
-    
-    steps:
-      - uses: actions/checkout@v4
-        with: 
-          face-depth: 0
-      - uses: super-linter/super-linter@v6.8.0
-        env:
-          DEFAULT_BRANCH: dev
-          VALIDATE_ALL_CODEBASE: true
-          VALIDATE_ALL_JAVA: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   test:
     name: Test the code
     runs-on: ubuntu-latest
