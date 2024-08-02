@@ -8,6 +8,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class ConfirmationCodeRepository implements PanacheRepository<ConfirmationCode> {
 
    public ConfirmationCode findConfirmationCodeByCodeAndUserEmail(String code, String email) {
-       return find("code ?1 code and user.email = ?2", code, email).firstResult();
+       return find("code = ?1 and user.email = ?2", code, email).firstResult();
    }
 }
