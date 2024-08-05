@@ -13,7 +13,6 @@ public final class MessageTranslator {
 
     public static String translate(String messageCode) {
 
-        System.out.println(messageCode);
         try {
             return ResourceBundle.getBundle(
                             "messages",
