@@ -1,12 +1,14 @@
 package com.scheduler.core.exceptions;
 
 import com.scheduler.core.exceptions.exception.GenericException;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
+@RegisterForReflection
 public class ExceptionHandler implements ExceptionMapper<RuntimeException> {
     @Override
     public Response toResponse(RuntimeException e) {
