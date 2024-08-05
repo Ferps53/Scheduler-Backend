@@ -14,7 +14,7 @@ import java.util.Random;
 @ApplicationScoped
 public class ConfirmationCodeController {
 
-    private static final Random RANDOM = new Random();
+    private final Random random = new Random();
     @Inject
     ConfirmationCodeRepository repository;
 
@@ -55,7 +55,7 @@ public class ConfirmationCodeController {
 
         final StringBuilder randomCode = new StringBuilder();
         for (int i = 0; i < size; i++) {
-            randomCode.append(RANDOM.nextInt(10));
+            randomCode.append(random.nextInt(10));
         }
 
         return randomCode.toString();

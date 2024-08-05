@@ -4,7 +4,6 @@ import com.scheduler.core.exceptions.exception.NotFoundException;
 import com.scheduler.features.task.dto.TaskDTO;
 import com.scheduler.features.task.model.Task;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
@@ -26,8 +25,9 @@ public class TaskRepository implements PanacheRepository<Task> {
                         LEFT JOIN t.user u
                         WHERE isInTrashBin = false AND
                         u.id = ?1
+                        Order by expiresIn ASC,
+                        t.id ASC
                         """,
-                Sort.by("expiresIn"),
                 userId
         )
                 .project(TaskDTO.class)

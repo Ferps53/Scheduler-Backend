@@ -1,10 +1,7 @@
-gradlew
-README.md
-base.env
-.env
-/build
-/.git
-/.gradle
-/.idea
-./.github
-gradlew.bat
+*
+!gradlew
+!gradle.properties
+!gradle
+!settings.gradle
+!build.gradle
+!src
