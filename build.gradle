@@ -9,7 +9,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.quarkus:quarkus-smallrye-jwt-build'
     implementation 'io.quarkus:quarkus-scheduler'
     implementation 'io.quarkus:quarkus-mailer'
     implementation 'io.quarkus:quarkus-security-jpa'

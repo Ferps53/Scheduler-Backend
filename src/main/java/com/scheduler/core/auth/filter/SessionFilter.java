@@ -4,25 +4,18 @@ import com.scheduler.core.auth.annotation.PublicSession;
 import com.scheduler.core.exceptions.ExceptionDTO;
 import com.scheduler.core.exceptions.exception.UnauthorizedException;
 import io.smallrye.jwt.auth.principal.JWTParser;
-import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
-import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ResourceInfo;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.ext.Provider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.resteasy.reactive.server.ServerRequestFilter;
 
 import java.time.Instant;
+import java.util.Optional;
 
-@Provider
-@Priority(1)
-public class SessionFilter implements ContainerRequestFilter {
-
-    @Context
-    ResourceInfo info;
+public class SessionFilter {
 
     @Inject
     JWTParser jwtParser;
@@ -30,22 +23,22 @@ public class SessionFilter implements ContainerRequestFilter {
     @ConfigProperty(name = "mp.jwt.verify.issuer")
     String issuer;
 
-    @Override
-    public void filter(ContainerRequestContext requestContext) {
+    @ServerRequestFilter(priority = 1)
+    public Optional<Response> filter(ContainerRequestContext requestContext, ResourceInfo info) {
 
         if (!info.getResourceMethod().isAnnotationPresent(PublicSession.class)) {
 
-            validateToken(requestContext);
+            return validateToken(requestContext);
         }
+        return Optional.empty();
     }
 
-    private void validateToken(ContainerRequestContext requestContext) {
+    private Optional<Response> validateToken(ContainerRequestContext requestContext) {
 
         final String token = requestContext.getHeaderString("Authorization");
 
         if (token == null || token.isEmpty() || !token.toLowerCase().startsWith("bearer ")) {
-            abortRequest(requestContext);
-            return;
+            return abortRequest();
         }
 
         try {
@@ -53,23 +46,24 @@ public class SessionFilter implements ContainerRequestFilter {
 
             final Instant now = Instant.now();
             if (!jwt.getIssuer().equals(issuer) || jwt.getExpirationTime() < now.getEpochSecond()) {
-                abortRequest(requestContext);
-                return;
+                return abortRequest();
             }
 
             final String isRefresh = jwt.getClaim("is_refresh");
             if (isRefresh == null || isRefresh.isEmpty() || isRefresh.equals("true")) {
-                abortRequest(requestContext);
+                return abortRequest();
+
             }
         } catch (Exception e) {
-            abortRequest(requestContext);
+            return abortRequest();
         }
+        return Optional.empty();
     }
 
-    private void abortRequest(ContainerRequestContext requestContext) {
-        requestContext.abortWith(Response
+    private Optional<Response> abortRequest() {
+        return Optional.of((Response
                 .status(Response.Status.UNAUTHORIZED)
                 .entity(new ExceptionDTO(new UnauthorizedException()))
-                .build());
+                .build()));
     }
 }
