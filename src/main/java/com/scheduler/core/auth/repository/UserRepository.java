@@ -7,6 +7,8 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +37,8 @@ public class UserRepository implements PanacheRepository<User> {
 
     public List<User> getInactiveUsersWithoutEmailConfirmation() {
 
-        return find("emailConfirmed = false").list();
+        final var instant = Instant.now().minus(15, ChronoUnit.MINUTES);
+        return find("emailConfirmed = false AND createdAt < ?1", instant).list();
     }
 
     public UserDTO findUserDTOById(Long id) {

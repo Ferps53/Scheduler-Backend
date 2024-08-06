@@ -4,6 +4,8 @@ import com.scheduler.core.auth.model.User;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -37,6 +39,7 @@ public class Task extends PanacheEntity {
     public LocalDateTime expiresIn;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "id_user", nullable = false)
     public User user;
 

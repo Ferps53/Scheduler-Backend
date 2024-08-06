@@ -12,7 +12,7 @@ public record TaskDTO(
         String description,
         boolean isConcluded,
         boolean isInTrashBin,
-        LocalDateTime createdAt,
+        @ProjectedFieldName("t.createdAt") LocalDateTime createdAt,
         LocalDateTime expiresIn,
         @ProjectedFieldName("t.user.id") long userId
 ) {
