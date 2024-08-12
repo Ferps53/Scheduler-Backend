@@ -23,6 +23,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-arc'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     implementation 'commons-io:commons-io:2.16.1'
+    implementation 'com.squareup.moshi:moshi:1.15.1'
 
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.quarkus:quarkus-junit5-mockito'
