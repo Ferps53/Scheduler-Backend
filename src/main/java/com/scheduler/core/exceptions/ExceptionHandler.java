@@ -14,11 +14,18 @@ public class ExceptionHandler implements ExceptionMapper<RuntimeException> {
     public Response toResponse(RuntimeException e) {
         Throwable cause = e;
 
+        e.printStackTrace();
+
         while (cause.getCause() != null) {
             cause = cause.getCause();
         }
 
         if (cause instanceof GenericException exception) {
+
+            if (exception.status.getStatusCode() == 500) {
+                e.printStackTrace();
+            }
+
             return Response.status(exception.status)
                     .entity(new ExceptionDTO(exception))
                     .type(MediaType.APPLICATION_JSON)

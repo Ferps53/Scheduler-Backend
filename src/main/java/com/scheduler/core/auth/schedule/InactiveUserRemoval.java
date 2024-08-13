@@ -14,7 +14,7 @@ public class InactiveUserRemoval {
     UserRepository userRepository;
 
     @Transactional
-    @Scheduled(cron = "0 0 * * * ?")
+    @Scheduled(timeZone = "America/Sao_Paulo", cron = "0 0 0 * * ?")
     public void removeInactiveUsers() {
 
         final var listInactiveUsers = userRepository.getInactiveUsersWithoutEmailConfirmation();

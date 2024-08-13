@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 
 @RegisterForReflection
 public record TaskDTO(
-        @ProjectedFieldName("t.id") long id,
+        long id,
         String title,
         String description,
         boolean isConcluded,
         boolean isInTrashBin,
-        LocalDateTime createdAt,
+        @ProjectedFieldName("createdAt") LocalDateTime createdAt,
         LocalDateTime expiresIn,
-        @ProjectedFieldName("t.user.id") long userId
+        @ProjectedFieldName("user.id") long userId
 ) {
 }

@@ -21,9 +21,9 @@ dependencies {
     implementation 'io.quarkus:quarkus-smallrye-jwt'
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
     implementation 'io.quarkus:quarkus-arc'
-    implementation 'redis.clients:jedis:5.0.2'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     implementation 'commons-io:commons-io:2.16.1'
+    implementation 'com.squareup.moshi:moshi:1.15.1'
 
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.quarkus:quarkus-junit5-mockito'
