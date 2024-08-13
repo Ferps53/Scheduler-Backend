@@ -6,9 +6,7 @@ import com.scheduler.features.task.model.Task;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.narayana.jta.QuarkusTransaction;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.eclipse.microprofile.context.ThreadContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +20,6 @@ import java.util.concurrent.Executors;
 @ApplicationScoped
 @SuppressWarnings("unchecked")
 public class TableSyncController {
-
-    @Inject
-    ThreadContext threadContext;
 
     public List<TableSyncDTO> syncAll(List<TableSyncDTO> listTableSyncDTO) {
         final var listSyncronizedTables = new ArrayList<TableSyncDTO>();

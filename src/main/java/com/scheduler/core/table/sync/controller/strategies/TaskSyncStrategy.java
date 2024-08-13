@@ -17,7 +17,6 @@ public class TaskSyncStrategy implements TableSyncStrategy<Task, TaskDTO>, Panac
     @Override
     public void deleteRow(long... id) {
 
-        System.out.println("Deleting id: " + id[0]);
         deleteById(id[0]);
     }
 
@@ -27,7 +26,6 @@ public class TaskSyncStrategy implements TableSyncStrategy<Task, TaskDTO>, Panac
         entity.id = null;
         entity.user = userRepository.findById(entity.user.id);
         persist(entity);
-        System.out.println("Inserted: " + entity.id);
     }
 
     @Override
@@ -42,7 +40,6 @@ public class TaskSyncStrategy implements TableSyncStrategy<Task, TaskDTO>, Panac
                 .and("expiresIn", entity.expiresIn);
 
         entity.user = userRepository.findById(entity.user.id);
-        System.out.println("Updating entity: " + entity.id);
         update("set title = :title, description = :desc, concludedAt = :concludedAt, isConcluded = :isConcluded, expiresIn = :expiresIn where id = :id and user.id = :userId", params);
     }
 
