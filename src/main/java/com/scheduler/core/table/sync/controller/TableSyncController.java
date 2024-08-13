@@ -4,18 +4,27 @@ import com.scheduler.core.table.sync.dto.TableSyncDTO;
 import com.scheduler.core.table.sync.enums.TableType;
 import com.scheduler.features.task.model.Task;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.narayana.jta.QuarkusTransaction;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.context.ThreadContext;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Transactional
 @ApplicationScoped
 @SuppressWarnings("unchecked")
 public class TableSyncController {
+
+    @Inject
+    ThreadContext threadContext;
 
     public List<TableSyncDTO> syncAll(List<TableSyncDTO> listTableSyncDTO) {
         final var listSyncronizedTables = new ArrayList<TableSyncDTO>();
@@ -69,17 +78,24 @@ public class TableSyncController {
         return listJsonEntities;
     }
 
-    private static <T extends PanacheEntity> void synchronizeTables(TableType tableType, List<T> listJsonEntities, List<T> updatedList, List<T> listDatabaseEntities) {
-        for (var entity : listJsonEntities) {
-            tableType.tableSyncStrategy.insertRow(entity);
-        }
+    private <T extends PanacheEntity> void synchronizeTables(TableType tableType, List<T> listJsonEntities, List<T> updatedList, List<T> listDatabaseEntities) {
 
-        for (var entity : updatedList) {
-            tableType.tableSyncStrategy.updateRow(entity);
-        }
+        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            final var runnables = new ConcurrentLinkedQueue<Runnable>();
 
-        for (var entity : listDatabaseEntities) {
-            tableType.tableSyncStrategy.deleteRow(entity.id);
+            for (var entity : listJsonEntities) {
+                runnables.add(() -> tableType.tableSyncStrategy.insertRow(entity));
+            }
+
+            for (var entity : updatedList) {
+                runnables.add(() -> tableType.tableSyncStrategy.updateRow(entity));
+            }
+
+            for (var entity : listDatabaseEntities) {
+                runnables.add(() -> tableType.tableSyncStrategy.deleteRow(entity.id));
+            }
+
+            runnables.forEach((runnable -> executor.execute(() -> QuarkusTransaction.requiringNew().run(runnable))));
         }
     }
 }

@@ -5,14 +5,11 @@ import com.scheduler.features.task.dto.TaskDTO;
 import com.scheduler.features.task.model.Task;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Parameters;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
+import jakarta.transaction.TransactionScoped;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
-@Transactional()
-@ApplicationScoped
+@TransactionScoped
 public class TaskSyncStrategy implements TableSyncStrategy<Task, TaskDTO>, PanacheRepository<Task> {
 
     final UserRepository userRepository = new UserRepository();
