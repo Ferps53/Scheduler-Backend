@@ -4,7 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public interface TableSyncStrategy<T extends PanacheEntity> {
+public interface TableSyncStrategy<T extends PanacheEntity, D> {
 
     void deleteRow(long... id);
 
@@ -12,5 +12,6 @@ public interface TableSyncStrategy<T extends PanacheEntity> {
 
     void updateRow(T entity);
 
-    CopyOnWriteArrayList<T> getTable();
+    CopyOnWriteArrayList<D> getTableDto(long... userId);
+    CopyOnWriteArrayList<T> getTableOrm(long... userId);
 }

@@ -13,6 +13,9 @@ import java.time.Instant;
 @Table(name = "users")
 public class User extends PanacheEntity {
 
+    @Column(name = "created_at", nullable = false)
+    public final Instant createdAt = Instant.now();
+
     @Column(name = "name", nullable = false, unique = true)
     public String name;
 
@@ -26,9 +29,6 @@ public class User extends PanacheEntity {
     @Column(name = "email_confirmed", length = 1, nullable = false)
     public boolean emailConfirmed;
 
-    @Column(name = "created_at", nullable = false)
-    public final Instant createdAt = Instant.now();
-
     public User() {
     }
 
@@ -37,5 +37,17 @@ public class User extends PanacheEntity {
         this.email = email;
         this.password = password;
         this.emailConfirmed = false;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", emailConfirmed=" + emailConfirmed +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

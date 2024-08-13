@@ -13,20 +13,15 @@ import java.util.List;
 public class TaskRepository implements PanacheRepository<Task> {
 
     private static final String BASE_QUERY_FIND_TASK = """
-            FROM Task t
-            LEFT JOIN t.user u
-            WHERE t.id = ?1 and
-            u.id = ?2
+            id = ?1 and
+            user.id = ?2
             """;
 
     public List<TaskDTO> listTasksNotInTrashBin(long userId) {
         return find("""
-                        FROM Task t
-                        LEFT JOIN t.user u
-                        WHERE isInTrashBin = false AND
-                        u.id = ?1
+                        user.id = ?1
                         Order by expiresIn ASC,
-                        t.id ASC
+                        id ASC
                         """,
                 userId
         )
